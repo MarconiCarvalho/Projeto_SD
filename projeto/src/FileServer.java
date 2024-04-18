@@ -10,19 +10,18 @@ public class FileServer {
         try {
             serverSocket = new ServerSocket(9999);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 9999.");
+            System.err.println("Não foi possível ouvir na porta: 9999.");
             System.exit(1);
         }
 
         Socket clientSocket = null;
-        System.out.println("Server is running. Waiting for connections...");
+        System.out.println("Servidor ok, Aguardando conexão...");
 
         while (true) {
             try {
                 clientSocket = serverSocket.accept();
-                System.out.println("Client connected: " + clientSocket.getInetAddress().getHostName());
+                System.out.println("Client conectado: " + clientSocket.getInetAddress().getHostName());
 
-                // Handling client request in a separate thread
                 Thread clientHandler = new ClientHandler(clientSocket);
                 clientHandler.start();
             } catch (IOException e) {
@@ -41,17 +40,16 @@ public class FileServer {
 
         public void run() {
             try {
-                // Input and output streams
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-                // Read client request
+                
                 String request = in.readLine();
                 String[] parts = request.split(" ");
                 String command = parts[0];
                 String fileName = parts[1];
 
-                // Handle client request
+            
                 switch (command) {
                     case "UPLOAD":
                         uploadFile(fileName, in);
@@ -64,10 +62,9 @@ public class FileServer {
                         deleteFile(fileName, out);
                         break;
                     default:
-                        out.println("Invalid command.");
+                        out.println("Comando invalido");
                 }
-
-                // Close streams and socket
+              
                 in.close();
                 out.close();
                 socket.close();
@@ -80,7 +77,7 @@ public class FileServer {
             String filePath = UPLOAD_DIR + fileName;
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 String line;
-                while ((line = in.readLine()) != null && !line.equals("END")) {
+                while ((line = in.readLine()) != null && !line.equals("FIM")) {
                     writer.write(line);
                     writer.newLine();
                 }
@@ -95,16 +92,16 @@ public class FileServer {
                     out.println(line);
                 }
             }
-            out.println("END"); // Signal end of file
+            out.println("FIM");
         }
 
         private void deleteFile(String fileName, PrintWriter out) {
             String filePath = UPLOAD_DIR + fileName;
             File file = new File(filePath);
             if (file.exists() && file.delete()) {
-                out.println("File deleted successfully.");
+                out.println("Deletado com sucesso..");
             } else {
-                out.println("Failed to delete file.");
+                out.println("falha na deleção.");
             }
         }
     }
