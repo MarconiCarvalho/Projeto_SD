@@ -37,10 +37,10 @@ public class FileClient {
                     System.out.println("Opção inválida.");
             }
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + serverAddress);
+            System.err.println("Host não encontrado" + serverAddress);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + serverAddress);
+            System.err.println("conexão falhou " + serverAddress);
             System.exit(1);
         }
     }
@@ -60,7 +60,7 @@ public class FileClient {
                 out.println(line);
             }
         }
-        out.println("FIM");
+        out.println("END");
         System.out.println("Arquivo enviado com sucesso.");
     }
 
