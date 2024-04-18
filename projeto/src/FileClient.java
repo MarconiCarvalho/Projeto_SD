@@ -12,7 +12,7 @@ public class FileClient {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in))
         ) {
-            // Menu de opções
+        
             System.out.println("Escolha a opção:");
             System.out.println("1. Upload");
             System.out.println("2. Download");
@@ -60,7 +60,7 @@ public class FileClient {
                 out.println(line);
             }
         }
-        out.println("END");
+        out.println("FIM");
         System.out.println("Arquivo enviado com sucesso.");
     }
 
